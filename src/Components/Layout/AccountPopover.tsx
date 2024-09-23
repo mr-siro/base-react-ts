@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { config } from '@src/Config';
-import { useAppDispatch } from '@src/App/Store';
+import { useAppDispatch, useAppSelector } from '@src/App/Store';
 import { logout } from '@src/App/Features/Auth';
 
 
@@ -35,6 +35,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { name, email, avatar } = useAppSelector(state => state.auth);
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
   }, []);
@@ -56,9 +57,9 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
     navigate('/login');
   }
   const _myAccount = {
-    displayName: 'Admin',
-    email: 'admin@gmail.com',
-    photoURL: `${config.publicUrl}/Images/mock-avt.png`,
+    displayName: name || '',
+    email: email || '',
+    photoURL: avatar || `${config.publicUrl}/Images/mock-avt.png`,
   };
 
   return (

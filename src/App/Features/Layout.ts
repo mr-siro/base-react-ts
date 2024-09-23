@@ -1,13 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface Toast {
+  open: boolean;
+  message: string;
+  severity: 'info' | 'error' | 'success' | 'warning';
+}
 interface LayoutState {
   openDrawer: boolean;
-  newNotify: number
+  newNotify: number;
+  toast: Toast;
 }
 
 const initialState: LayoutState = {
   openDrawer: false,
   newNotify: 0,
+  toast: {
+    open: false, message: '', severity: 'success'
+  }
 };
 
 export const layoutSlice = createSlice({
@@ -18,8 +27,11 @@ export const layoutSlice = createSlice({
       const { payload } = data;
       state.openDrawer = payload;
     },
+    setToast: (state, data: PayloadAction<Toast>) => {
+      state.toast = { ...state.toast, ...data.payload}
+    }
   },
 });
 
-export const { setOpenDrawer } = layoutSlice.actions;
+export const { setOpenDrawer, setToast } = layoutSlice.actions;
 export default layoutSlice.reducer;

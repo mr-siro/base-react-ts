@@ -4,6 +4,8 @@ import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import { createStyles } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { useAppDispatch, useAppSelector } from '@src/App/Store'
+import { setToast } from '@src/App/Features/Layout'
 
 const useStyles: any = makeStyles(() =>
   createStyles({
@@ -13,27 +15,26 @@ const useStyles: any = makeStyles(() =>
   })
 )
 export function Notification(): React.ReactElement {
-  const open = false;
-  const message = 'dadadad';
-  const severity = 'success';
+  const { toast } = useAppSelector(state => state.layout);
+  const dispatch = useAppDispatch();
   // classes
   const classes = useStyles()
 
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
-    // notificationVar({ open: false, message: '', severity: severity })
+    if (reason === 'clickaway') return;
+    dispatch(setToast({ open: false, message: '', severity: toast.severity }))
   }
 
   return (
     <Snackbar
-      open={open}
+      open={toast.open}
       onClose={handleClose}
       autoHideDuration={4000}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       className={classes.notification}
     >
-      <Alert onClose={handleClose} severity={severity} variant="standard">
-        <div dangerouslySetInnerHTML={{ __html: message }} />
+      <Alert onClose={handleClose} severity={toast.severity} variant="standard">
+        <div dangerouslySetInnerHTML={{ __html: toast.message }} />
       </Alert>
     </Snackbar>
   )

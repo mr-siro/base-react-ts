@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, Box } from "@mui/material";
+import { openToast } from "@src/Helpers/functions";
 
 interface PaymentModalProps {
-  selectedRows: any[]; // Bạn có thể đặt kiểu của các hàng được chọn
+  selectedRows: any[];
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ selectedRows }) => {
@@ -43,6 +44,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ selectedRows }) => {
               onClick={() => {
                 console.log("Thanh toán và In");
                 setOpen(false);
+                openToast({ message: 'Thanh toán thành công!' })
               }}
             >
               Thanh toán và In (Ctrl + L)
@@ -53,6 +55,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ selectedRows }) => {
               onClick={() => {
                 console.log("Thanh toán");
                 setOpen(false);
+                openToast({ message: 'Thanh toán thành công!' })
               }}
             >
               Thanh toán (Ctrl + T)

@@ -1,9 +1,10 @@
-import React, { ComponentType, ReactElement, Fragment, Suspense, useEffect, useState } from 'react'
+import React, { ComponentType, ReactElement, Fragment, Suspense, useEffect } from 'react'
 import './App.css'
 import { Routes, Route, PathRouteProps, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Loading } from '@Components/Loading'
 import { routes } from './Routes'
 import { Notification } from '@Components/Notification/Notification'
+import { useAppSelector } from './App/Store'
 
 interface Props extends PathRouteProps {
   layout: React.FunctionComponent<any>
@@ -22,16 +23,16 @@ const routeWrapper = (
   icon: Props['icon'],
   needAuthentication: Props['needAuthentication']
 ): ReactElement => {
-  const  isLoading = false
-  const isAuthenticated = true;
-  const user = {}
+  const { accessToken, status } = useAppSelector(state => state.auth);
+  const isAuthenticated = !!accessToken && status === 'active';
   const location = useLocation()
-  const navigate = useNavigate()
-  const currentUser = {}
+  const navigate = useNavigate();
 
-  if (isLoading) {
-    return <Loading />
-  }
+  useEffect(() => {
+    if (needAuthentication && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [needAuthentication, isAuthenticated]);
 
   useEffect(() => {
     console.clear()

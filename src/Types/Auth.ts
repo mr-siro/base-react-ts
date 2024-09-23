@@ -11,3 +11,8 @@ export interface LoginResponse {
   accessToken?: string | null | Record<string, unknown> | undefined;
   avatar?: string;
 }
+
+export interface UserLogin {
+  email: string;
+  password: string;
+}

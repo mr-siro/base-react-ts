@@ -39,7 +39,7 @@ const BillingRoute: RouteComponent = {
   icon: '',
   component: Billing,
   layout: Layout,
-  needAuthentication: false,
+  needAuthentication: true,
   title: 'Viện phí',
   subTitle: 'Dịch vụ cần thanh toán',
 }
@@ -51,7 +51,7 @@ const HomeRoute: RouteComponent = {
   icon: '',
   component: Home,
   layout: Layout,
-  needAuthentication: false,
+  needAuthentication: true,
   title: 'Trang chủ',
   subTitle: '',
 }

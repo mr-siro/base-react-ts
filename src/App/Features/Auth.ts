@@ -17,7 +17,6 @@ const initialState: LoginResponse = {
 interface TokenInfo {
   email: string;
   exp: number;
-  iat: number;
   id: number;
   name: string;
 }

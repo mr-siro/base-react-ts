@@ -1,14 +1,17 @@
 import axios from 'axios'
 
 import registerCancelTokenAxios from './RegisterCancelTokenAxios'
+import { config } from '@src/Config'
+import { store } from '@src/App/Store'
+import { logout } from '@src/App/Features/Auth'
 
-const privateKeys = ['auth_token']
+const privateKeys = ['accessToken']
 const formatObjectWithEmptyValue = (
   params: Record<string, any> = {},
   isRemovePrivateKeys?: boolean,
 ) => {
   if (typeof FormData !== 'undefined' && params instanceof FormData) {
-    params.delete('auth_token')
+    params.delete('accessToken')
     return params
   } else {
     return Object.keys(params).reduce(
@@ -30,9 +33,8 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // const messError = error?.response?.data?.data?.error
       console.log('unauthorized!')
-      // sessionSignOut(messError)
+      store.dispatch(logout());
     }
 
     return Promise.reject(error)
@@ -47,7 +49,7 @@ export default class ProxyBase {
   baseServiceUrl = ''
 
   constructor() {
-    this.baseServiceUrl = `${process.env.NEXT_PUBLIC_API_URL}`
+    this.baseServiceUrl = config.baseServiceUrl;
   }
 
   async get(
@@ -215,12 +217,12 @@ const formatCancelTokenName = (
 
 const configAccessToken = async (data?: Record<string, any>) => {
   try {
-    const user: any = {}
+    const { auth } = store.getState()
 
     const token =
-      data?.auth_token ||
-      (data instanceof FormData ? data?.get('auth_token') : '') ||
-      user?.auth_token
+      data?.accessToken ||
+      (data instanceof FormData ? data?.get('accessToken') : '') ||
+     auth?.accessToken
 
     if (token) {
       axios.defaults.headers.common.Authorization = `Bearer ${token}`

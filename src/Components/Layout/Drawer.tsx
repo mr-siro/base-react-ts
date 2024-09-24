@@ -155,6 +155,16 @@ export default function AppDrawer() {
           open={openDrawer}
           onMouseEnter={() => handleToggle(true)}
           onMouseLeave={() => handleToggle(false)}
+          PaperProps={{
+            sx: {
+              width: openDrawer ? 240 : 60,
+              transition: 'width 0.2s',
+              position: 'absolute',
+              left: 0,
+              zIndex: 99999,
+              overflowX: 'hidden',
+            },
+          }}
         >
           <Box
             mt={3}

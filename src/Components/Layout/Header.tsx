@@ -2,7 +2,6 @@ import { Box, styled, Typography } from "@mui/material";
 import React from "react";
 
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { DRAWER_WIDTH } from "@src/Common/Constants";
 import { useAppSelector } from "@src/App/Store";
 import { styles } from "./styles";
 import ExportQueueIcon from "../Icons/ExportQueueIcon";
@@ -10,7 +9,6 @@ import { AccountPopover } from "./AccountPopover";
 import HomeIcon from "@mui/icons-material/Home";
 import ShieldIcon from "@mui/icons-material/Shield";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { theme } from "@src/theme";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -27,8 +25,6 @@ const AppBar = styled(MuiAppBar, {
     {
       props: ({ open }) => open,
       style: {
-        width: `calc(100% - ${DRAWER_WIDTH}px)`,
-        marginLeft: `${DRAWER_WIDTH}px`,
         transition: theme.transitions.create(["margin", "width"], {
           easing: theme.transitions.easing.easeOut,
           duration: theme.transitions.duration.enteringScreen,
@@ -47,15 +43,13 @@ const Header = ({ title = "" }: { title: string }): React.ReactElement => {
         display={"flex"}
         alignItems={"center"}
         alignSelf={"flex-end"}
-        sx={{
-          width: openDrawer ? "100%" : "calc(100% - 65px)",
-          transition: theme.transitions.create(["margin", "width"], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-        }}
+        width={"100%"}
       >
-        <Box sx={classes.nameCont} display={"flex"}>
+        <Box
+          sx={classes.nameCont}
+          display={"flex"}
+          marginLeft={openDrawer ? "240px" : "60px"}
+        >
           <Typography>{title}</Typography>
           {newNotify > 0 && (
             <Box component={"span"} ml={1.25}>
@@ -63,32 +57,33 @@ const Header = ({ title = "" }: { title: string }): React.ReactElement => {
             </Box>
           )}
         </Box>
-        
-        
-        <Box sx={classes.stackCont} mr={1.75}>
-          <ExportQueueIcon />
-          <Typography>Xuất hàng chờ</Typography>
-        </Box>
 
-        <AccountPopover
-          data={[
-            {
-              label: "Home",
-              href: "/",
-              icon: <HomeIcon width={22} />,
-            },
-            {
-              label: "Profile",
-              href: "#",
-              icon: <ShieldIcon width={22} />,
-            },
-            {
-              label: "Settings",
-              href: "#",
-              icon: <SettingsIcon width={22} />,
-            },
-          ]}
-        />
+        <Box display={"flex"}>
+          <Box sx={classes.stackCont} mr={1.75}>
+            <ExportQueueIcon />
+            <Typography>Xuất hàng chờ</Typography>
+          </Box>
+
+          <AccountPopover
+            data={[
+              {
+                label: "Home",
+                href: "/",
+                icon: <HomeIcon width={22} />,
+              },
+              {
+                label: "Profile",
+                href: "#",
+                icon: <ShieldIcon width={22} />,
+              },
+              {
+                label: "Settings",
+                href: "#",
+                icon: <SettingsIcon width={22} />,
+              },
+            ]}
+          />
+        </Box>
       </Box>
     </AppBar>
   );

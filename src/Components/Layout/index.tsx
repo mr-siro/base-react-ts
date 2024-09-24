@@ -34,7 +34,7 @@ const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
       <CssBaseline />
       <Header title={title} />
       <AppDrawer />
-      <Box component="main" flex={1} mt={4}>
+      <Box component="main" flex={1} pt={5}>
         {subTitle && (
           <Typography
             color={theme.palette.text.secondary}

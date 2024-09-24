@@ -13,4 +13,4 @@ export const stringRequired = ({ required = 'required' }) =>
 export const emailValidation = ({
   email = 'Vui lòng nhập địa chỉ email hợp lệ',
   required = 'required',
-}) => stringRequired({ required }).email(email).max(100, maxMsg(100)).matches(MailRegExp, email);
+}) => stringRequiredTrim({ required }).email(email).max(100, maxMsg(100)).matches(MailRegExp, email);

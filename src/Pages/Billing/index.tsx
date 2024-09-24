@@ -1,89 +1,50 @@
 import { Box, Checkbox, IconButton, Typography } from "@mui/material";
 import TableCommon from "@src/Components/Common/Table/TableCommon";
 import { theme } from "@src/theme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PaymentModal from "@src/Components/Modal/PaymentModal";
 import SpinnerComponent from "@src/Components/Common/SpinnerComponent/SpinnerComponent";
 import ConfirmationDialog from "@src/Components/Modal/ConfirmationDialog";
-
-interface UserData {
-  id: number;
-  serviceName: string;
-  unitPrice: number;
-  quantity: number;
-  totalFee: number;
-  payed: boolean;
-}
-
-const data: UserData[] = [
-  {
-    id: 1,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: true,
-    quantity: 1,
-    totalFee: 100000,
-  },
-  {
-    id: 2,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: false,
-    quantity: 1,
-    totalFee: 100000,
-  },
-  {
-    id: 3,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: false,
-    quantity: 1,
-    totalFee: 100000,
-  },
-  {
-    id: 4,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: false,
-    quantity: 1,
-    totalFee: 100000,
-  },
-  {
-    id: 5,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: false,
-    quantity: 1,
-    totalFee: 100000,
-  },
-  {
-    id: 6,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: false,
-    quantity: 1,
-    totalFee: 100000,
-  },
-  {
-    id: 7,
-    serviceName: "Khám bệnh số 01",
-    unitPrice: 100000,
-    payed: false,
-    quantity: 1,
-    totalFee: 100000,
-  },
-];
+import { UserData } from "@src/Types/Billing";
+import { openToast } from "@src/Helpers/functions";
+import billingProxy from "@src/Proxies/Modules/Billing";
+import { NumberParam, useQueryParams } from "use-query-params";
 
 export const Billing: React.FC = () => {
+  const [query] = useQueryParams({
+    page: NumberParam,
+    perPage: NumberParam,
+  });
+
   const [selectedRows, setSelectedRows] = useState<UserData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<UserData | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [list, setList] = useState<UserData[]>([]);
 
   const handleRowSelectionChange = (rows: UserData[]) => {
     setSelectedRows(rows);
   };
+
+  const handleGetBillings = async () => {
+    try {
+      setLoading(true);
+      const { data } = await billingProxy.getBillings({
+        page: query.page || 1,
+        perPage: query.perPage || 20,
+      });
+      setList(data);
+    } catch (error: any) {
+      openToast({ message: error?.message, type: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleGetBillings();
+  }, [query.page, query.perPage]);
 
   const columns = [
     {
@@ -164,10 +125,13 @@ export const Billing: React.FC = () => {
       cell: ({ row }: any) => (
         <>
           {!row.original.payed && (
-            <IconButton aria-label="delete" onClick={() => {
-              setCurrentRow(row.original);
-              setOpenDeleteModal(true);
-            }}>
+            <IconButton
+              aria-label="delete"
+              onClick={() => {
+                setCurrentRow(row.original);
+                setOpenDeleteModal(true);
+              }}
+            >
               <DeleteIcon />
             </IconButton>
           )}
@@ -181,7 +145,7 @@ export const Billing: React.FC = () => {
     <Box>
       <SpinnerComponent isLoading={loading} />
       <TableCommon
-        data={data}
+        data={list}
         columns={columns}
         onRowSelectionChange={handleRowSelectionChange}
       />
@@ -193,8 +157,10 @@ export const Billing: React.FC = () => {
         secondBtnEvent={() => setOpenDeleteModal(false)}
         firstBtnEvent={() => setOpenDeleteModal(false)}
       >
-        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
-          <Typography>{currentRow?.serviceName + '-' + currentRow?.totalFee}</Typography>
+        <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+          <Typography>
+            {currentRow?.serviceName + "-" + currentRow?.totalFee}
+          </Typography>
         </Box>
       </ConfirmationDialog>
     </Box>

@@ -1,0 +1,60 @@
+import { UserData } from "@src/Types/Billing";
+
+export const billingData: UserData[] = [
+  {
+    id: 1,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: true,
+    quantity: 1,
+    totalFee: 100000,
+  },
+  {
+    id: 2,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: false,
+    quantity: 1,
+    totalFee: 100000,
+  },
+  {
+    id: 3,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: false,
+    quantity: 1,
+    totalFee: 100000,
+  },
+  {
+    id: 4,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: false,
+    quantity: 1,
+    totalFee: 100000,
+  },
+  {
+    id: 5,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: false,
+    quantity: 1,
+    totalFee: 100000,
+  },
+  {
+    id: 6,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: false,
+    quantity: 1,
+    totalFee: 100000,
+  },
+  {
+    id: 7,
+    serviceName: "Khám bệnh số 01",
+    unitPrice: 100000,
+    payed: false,
+    quantity: 1,
+    totalFee: 100000,
+  },
+];
